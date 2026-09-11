@@ -1,6 +1,6 @@
 # CLAUDE.md — Light Propagation
 
-Sim-specific context for AI assistants. General SceneryStack guidance: [OpenPhysics/.github/CLAUDE.md](https://github.com/OpenPhysics/.github/blob/main/CLAUDE.md).
+Sim-specific context for AI assistants. General SceneryStack guidance: [OpenLyceum/.github/CLAUDE.md](https://github.com/OpenLyceum/.github/blob/main/CLAUDE.md).
 
 ## Project
 
@@ -48,7 +48,7 @@ Shared code uses the `LightPropagation` prefix; per-screen code uses `Intro` / `
 
 ## Accessibility
 
-Follows the shared [OpenPhysics accessibility convention](https://github.com/OpenPhysics/Baton/blob/main/ACCESSIBILITY.md).
+Follows the shared [OpenLyceum accessibility convention](https://github.com/OpenLyceum/Baton/blob/main/ACCESSIBILITY.md).
 Each screen ships PDOM names, a `*ScreenSummaryContent`, and `*KeyboardHelpContent` with explicit
 `pdomOrder`. A11y strings live under `a11y.<screenKey>` (`intro` / `polarization` / `wavePlates` /
 `lab`) in each locale JSON, via `StringManager.getIntroA11yStrings()` /

@@ -1,6 +1,6 @@
 # Light Propagation
 
-[![CI](https://github.com/OpenPhysics/LightPropagation/actions/workflows/ci.yml/badge.svg)](https://github.com/OpenPhysics/LightPropagation/actions/workflows/ci.yml)
+[![CI](../../actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
 
 An interactive simulation of how light propagates through polarizers and wave plates, built with
 [SceneryStack](https://scenerystack.org/), Vite 8, TypeScript 7, and Biome 2.
@@ -28,7 +28,7 @@ Each screen composes the shared `WaveSceneModel` (`src/common/model/`) — elect
 - Default and projector color profiles
 - Progressive Web App (installable, offline-capable)
 - Git hooks for Biome pre-commit checks
-- Shared GitHub Actions CI via `OpenPhysics/Baton`
+- Shared GitHub Actions CI via `OpenLyceum/Baton`
 
 ## Quick Start
 
@@ -73,9 +73,9 @@ New sims start at `version: "0.0.0"` in `package.json`. Bump only when cutting a
 
 ## License
 
-GNU Affero General Public License v3.0 — see [OpenPhysics org license](https://github.com/OpenPhysics/.github/blob/main/LICENSE).
+GNU Affero General Public License v3.0 — see [OpenLyceum org license](https://github.com/OpenLyceum/.github/blob/main/LICENSE).
 
 ## Contributing
 
-See [OpenPhysics contributing guidelines](https://github.com/OpenPhysics/.github/blob/main/CONTRIBUTING.md).
+See [OpenLyceum contributing guidelines](https://github.com/OpenLyceum/.github/blob/main/CONTRIBUTING.md).
 Report bugs via GitHub Issues; use org issue templates.

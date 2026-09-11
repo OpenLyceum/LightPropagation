@@ -90,7 +90,7 @@ onReadyToLaunch(() => {
       thanks:
         "Based on EMANIM: Interactive visualization of electromagnetic waves by András Szilágyi " +
         "(emanim.szialab.org), the source of the model equations, control ranges, and preset phenomena. " +
-        "Built with SceneryStack as part of the OpenPhysics fleet.",
+        "Built with SceneryStack as part of the OpenLyceum fleet.",
     },
   });
 
