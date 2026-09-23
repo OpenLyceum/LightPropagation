@@ -64,7 +64,7 @@ preallocated `Float32Array` buffers once per frame instead.
 ## Common components
 
 - `LightPropagationPanel` — pre-themed panel; all control panels use it for automatic projector-mode switching.
-- `LightPropagationButtonOptions` — flat button/combo-box option bundles (see `CLAUDE.md`).
+- `LightPropagationButtonOptions` — flat button/combo-box option bundles (see `AGENTS.md`).
 - `TimeModel` — composable play/pause + elapsed time, composed into `WaveSceneModel` (time in EMANIM axis units).
 
 ## Preset / permalink flow
