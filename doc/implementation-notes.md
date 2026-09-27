@@ -95,7 +95,7 @@ Gate: `npm run check && npm run lint && npm run build && npm test`.
 
 Per-screen folders (`src/intro/`, `src/polarization/`, …), `StringManager` getters for screen
 names and a11y (`getIntroA11yStrings()`, …), and shared physics in `src/common/`. See
-`doc/multi-screen.md` for the fleet convention when adding screens.
+[SceneryStackTemplate `doc/multi-screen.md`](https://github.com/OpenLyceum/SceneryStackTemplate/blob/main/doc/multi-screen.md) for the fleet convention when adding screens.
 
 ## Known gaps
 
