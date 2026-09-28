@@ -55,6 +55,21 @@ Each screen ships PDOM names, a `*ScreenSummaryContent`, and `*KeyboardHelpConte
 `getPolarizationA11yStrings()` / `getWavePlatesA11yStrings()` / `getLabA11yStrings()`. Make each
 `currentDetailsContent` a live `DerivedProperty` over model state.
 
+## Compliance carve-outs
+
+### `package.json` overrides
+
+JSON cannot carry comments, so the rationale for forced transitive pins lives here. Prefer
+**tilde (`~`) or exact** versions — caret (`^`) lets minors drift under what is meant to be a
+hard pin. Dependabot ignores these three names (see `.github/dependabot.yml`) so it does not
+open PRs that fight the overrides. Revisit when SceneryStack drops or re-pins them upstream.
+
+| Override | Pin | Why |
+|---|---|---|
+| `lodash` | `~4.18.1` | SceneryStack declares `~4.17.12`. Bump clears Dependabot/npm advisories patched in 4.18.x (e.g. GHSA-r5fr-rjxr-66jc, GHSA-f23m-r3pf-42rh). |
+| `three` | `^0.185.1` | This sim uses Three.js APIs on the current line, not SceneryStack's 0.125 pin. `@types/three` matches. Do not force `~0.125.2` here. |
+| `brace-expansion` | `~5.0.9` | Transitive via `vite-plugin-pwa` / Workbox. Clears npm audit (originally GHSA-mh99-v99m-4gvg; keep ≥5.0.9 for GHSA-rgw5-rvv9-x895). |
+
 ## Testing
 
 Fleet-standard Vitest layout (`happy-dom`, `tests/setup.ts`, `execArgv: ["--expose-gc"]`):
@@ -99,18 +114,3 @@ npm run lint && npm run check && npm run build && npm test
   so projector mode stays readable on dark panels.
 - **Hot path:** field sampling writes into preallocated `Float32Array` buffers once per frame.
 - **PWA:** after `npm run build`, installable offline via Workbox (`dist/manifest.webmanifest`).
-
-## Compliance carve-outs
-
-### `package.json` overrides
-
-JSON cannot carry comments, so the rationale for forced transitive pins lives here. Prefer
-**tilde (`~`) or exact** versions — caret (`^`) lets minors drift under what is meant to be a
-hard pin. Dependabot ignores these three names (see `.github/dependabot.yml`) so it does not
-open PRs that fight the overrides. Revisit when SceneryStack drops or re-pins them upstream.
-
-| Override | Pin | Why |
-|---|---|---|
-| `lodash` | `~4.18.1` | SceneryStack declares `~4.17.12`. Bump clears Dependabot/npm advisories patched in 4.18.x (e.g. GHSA-r5fr-rjxr-66jc, GHSA-f23m-r3pf-42rh). |
-| `three` | `^0.185.1` | This sim uses Three.js APIs on the current line, not SceneryStack's 0.125 pin. `@types/three` matches. Do not force `~0.125.2` here. |
-| `brace-expansion` | `~5.0.9` | Transitive via `vite-plugin-pwa` / Workbox. Clears npm audit (originally GHSA-mh99-v99m-4gvg; keep ≥5.0.9 for GHSA-rgw5-rvv9-x895). |
