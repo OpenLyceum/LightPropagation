@@ -11,6 +11,7 @@ import { Screen } from "scenerystack/sim";
 import type { Tandem } from "scenerystack/tandem";
 import { createLabIcon } from "../common/LightPropagationScreenIcons.js";
 import LightPropagationColors from "../LightPropagationColors.js";
+import type { LightPropagationPreferencesModel } from "../preferences/LightPropagationPreferencesModel.js";
 import { getLabQueryParameterValues } from "../preferences/lightPropagationQueryParameters.js";
 import { LabModel } from "./model/LabModel.js";
 import { stateFromQueryParameters } from "./model/labQueryParameterMapping.js";
@@ -18,7 +19,7 @@ import { LabKeyboardHelpContent } from "./view/LabKeyboardHelpContent.js";
 import { LabScreenView } from "./view/LabScreenView.js";
 
 // Require tandem to be explicit — accidental omission would break PhET-iO.
-type LabScreenOptions = ScreenOptions & { tandem: Tandem };
+type LabScreenOptions = ScreenOptions & { tandem: Tandem; preferences: LightPropagationPreferencesModel };
 
 export class LabScreen extends Screen<LabModel, LabScreenView> {
   public constructor(options: LabScreenOptions) {
@@ -27,7 +28,7 @@ export class LabScreen extends Screen<LabModel, LabScreenView> {
       // initial state comes from the permalink query parameters (which is the
       // plain default state when none are given), so Reset All restores the
       // permalinked configuration.
-      () => new LabModel(stateFromQueryParameters(getLabQueryParameterValues())),
+      () => new LabModel(options.preferences, stateFromQueryParameters(getLabQueryParameterValues())),
       // View factory — receives the model instance
       (model) =>
         new LabScreenView(model, {

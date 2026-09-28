@@ -13,7 +13,7 @@ import { StringUnionProperty } from "scenerystack/axon";
 import type { TModel } from "scenerystack/joist";
 import { WaveSceneModel } from "../../common/model/WaveSceneModel.js";
 import type { WaveSceneState } from "../../common/model/WaveSceneState.js";
-import { LightPropagationPreferencesModel } from "../../preferences/LightPropagationPreferencesModel.js";
+import type { LightPropagationPreferencesModel } from "../../preferences/LightPropagationPreferencesModel.js";
 import { getLabPresetState, type LabPresetSelection, LabPresetSelectionValues } from "./LabPresets.js";
 
 /** The screen's startup configuration (from permalink query parameters). */
@@ -29,10 +29,9 @@ export class LabModel implements TModel {
 
   public readonly presetProperty: StringUnionProperty<LabPresetSelection>;
 
-  public constructor(initial?: LabInitialState) {
+  public constructor(preferences: LightPropagationPreferencesModel, initial?: LabInitialState) {
     this.scene = new WaveSceneModel(initial?.state, {
-      wavelengthDependentAbsorptionProperty:
-        LightPropagationPreferencesModel.getInstance().wavelengthDependentAbsorptionProperty,
+      wavelengthDependentAbsorptionProperty: preferences.wavelengthDependentAbsorptionProperty,
     });
     this.presetProperty = new StringUnionProperty<LabPresetSelection>(initial?.selection ?? "vertical", {
       validValues: LabPresetSelectionValues,

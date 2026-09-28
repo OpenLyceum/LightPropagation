@@ -14,22 +14,22 @@
  */
 import type { TModel } from "scenerystack/joist";
 import { WaveSceneModel } from "../../common/model/WaveSceneModel.js";
-import { LightPropagationPreferencesModel } from "../../preferences/LightPropagationPreferencesModel.js";
+import type { LightPropagationPreferencesModel } from "../../preferences/LightPropagationPreferencesModel.js";
 
 export class PolarizationModel implements TModel {
-  public readonly scene = new WaveSceneModel(
-    {
-      wave1: { enabled: true, polarization: "vertical" },
-      wave2: { enabled: true, polarization: "horizontal" },
-      sumEnabled: true,
-    },
-    {
-      wavelengthDependentAbsorptionProperty:
-        LightPropagationPreferencesModel.getInstance().wavelengthDependentAbsorptionProperty,
-    },
-  );
+  public readonly scene: WaveSceneModel;
 
-  public constructor() {
+  public constructor(preferences: LightPropagationPreferencesModel) {
+    this.scene = new WaveSceneModel(
+      {
+        wave1: { enabled: true, polarization: "vertical" },
+        wave2: { enabled: true, polarization: "horizontal" },
+        sumEnabled: true,
+      },
+      {
+        wavelengthDependentAbsorptionProperty: preferences.wavelengthDependentAbsorptionProperty,
+      },
+    );
     // One shared wavelength control drives both waves.
     this.scene.wave1.wavelengthNumberProperty.link((wavelengthNumber) => {
       this.scene.wave2.wavelengthNumberProperty.value = wavelengthNumber;

@@ -36,9 +36,8 @@ onReadyToLaunch(() => {
   const stringManager = StringManager.getInstance();
   const screenNames = stringManager.getScreenNames();
 
-  // Simulation-specific preferences; the same singleton the screen models
-  // read, so the absorption toggle takes effect live.
-  const simPreferences = LightPropagationPreferencesModel.getInstance();
+  // Simulation-specific preferences; initial values come from lightPropagationQueryParameters.
+  const simPreferences = new LightPropagationPreferencesModel(Tandem.ROOT.createTandem("preferences"));
 
   const screens = [
     new IntroScreen({
@@ -52,6 +51,7 @@ onReadyToLaunch(() => {
       name: screenNames.polarizationStringProperty,
       tandem: Tandem.ROOT.createTandem("polarizationScreen"),
       backgroundColorProperty: LightPropagationColors.backgroundColorProperty,
+      preferences: simPreferences,
     }),
     new WavePlatesScreen({
       // The screen name Property updates automatically when the locale changes
@@ -64,6 +64,7 @@ onReadyToLaunch(() => {
       name: screenNames.labStringProperty,
       tandem: Tandem.ROOT.createTandem("labScreen"),
       backgroundColorProperty: LightPropagationColors.backgroundColorProperty,
+      preferences: simPreferences,
     }),
   ];
 

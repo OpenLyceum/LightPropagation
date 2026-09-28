@@ -11,18 +11,22 @@ import { Screen } from "scenerystack/sim";
 import type { Tandem } from "scenerystack/tandem";
 import { createPolarizationIcon } from "../common/LightPropagationScreenIcons.js";
 import LightPropagationColors from "../LightPropagationColors.js";
+import type { LightPropagationPreferencesModel } from "../preferences/LightPropagationPreferencesModel.js";
 import { PolarizationModel } from "./model/PolarizationModel.js";
 import { PolarizationKeyboardHelpContent } from "./view/PolarizationKeyboardHelpContent.js";
 import { PolarizationScreenView } from "./view/PolarizationScreenView.js";
 
 // Require tandem to be explicit — accidental omission would break PhET-iO.
-type PolarizationScreenOptions = ScreenOptions & { tandem: Tandem };
+type PolarizationScreenOptions = ScreenOptions & {
+  tandem: Tandem;
+  preferences: LightPropagationPreferencesModel;
+};
 
 export class PolarizationScreen extends Screen<PolarizationModel, PolarizationScreenView> {
   public constructor(options: PolarizationScreenOptions) {
     super(
       // Model factory — called once when the screen is first shown
-      () => new PolarizationModel(),
+      () => new PolarizationModel(options.preferences),
       // View factory — receives the model instance
       (model) =>
         new PolarizationScreenView(model, {
