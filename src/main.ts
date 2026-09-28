@@ -40,24 +40,27 @@ onReadyToLaunch(() => {
   // read, so the absorption toggle takes effect live.
   const simPreferences = LightPropagationPreferencesModel.getInstance();
 
-  // Screen name Properties update automatically when the locale changes.
   const screens = [
     new IntroScreen({
+      // The screen name Property updates automatically when the locale changes
       name: screenNames.introStringProperty,
       tandem: Tandem.ROOT.createTandem("introScreen"),
       backgroundColorProperty: LightPropagationColors.backgroundColorProperty,
     }),
     new PolarizationScreen({
+      // The screen name Property updates automatically when the locale changes
       name: screenNames.polarizationStringProperty,
       tandem: Tandem.ROOT.createTandem("polarizationScreen"),
       backgroundColorProperty: LightPropagationColors.backgroundColorProperty,
     }),
     new WavePlatesScreen({
+      // The screen name Property updates automatically when the locale changes
       name: screenNames.wavePlatesStringProperty,
       tandem: Tandem.ROOT.createTandem("wavePlatesScreen"),
       backgroundColorProperty: LightPropagationColors.backgroundColorProperty,
     }),
     new LabScreen({
+      // The screen name Property updates automatically when the locale changes
       name: screenNames.labStringProperty,
       tandem: Tandem.ROOT.createTandem("labScreen"),
       backgroundColorProperty: LightPropagationColors.backgroundColorProperty,
@@ -85,7 +88,7 @@ onReadyToLaunch(() => {
       },
     }),
 
-    // Credits shown in the About dialog.
+    // Optional: fill in credits shown in Help → About
     credits: {
       thanks:
         "Based on EMANIM: Interactive visualization of electromagnetic waves by András Szilágyi " +
