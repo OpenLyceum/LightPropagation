@@ -21,12 +21,12 @@
  * `?wave1=leftCircular&wave2=rightCircular&sum=true` to the sim URL.
  */
 
-import { logGlobal } from "scenerystack/phet-core";
+import { getGlobal, logGlobal } from "scenerystack/phet-core";
 import { QueryStringMachine } from "scenerystack/query-string-machine";
 import { PolarizationTypeValues } from "../common/model/PolarizationType.js";
 import LightPropagationNamespace from "../LightPropagationNamespace.js";
 import { type LabPresetKey, LabPresetKeys } from "../lab/model/LabPresets.js";
-import type { LabQueryParameterValues } from "../lab/model/labQueryParameterMapping.js";
+import type { LabQueryParameterValues, PermalinkPassthrough } from "../lab/model/labQueryParameterMapping.js";
 
 /** A wave parameter is a polarization, or "off" to disable the wave. */
 const WAVE_VALUES = ["off", ...PolarizationTypeValues];
@@ -196,6 +196,44 @@ export function getLabQueryParameterValues(): LabQueryParameterValues {
     kappa1: provided("kappa1", qp.kappa1),
     kappa2: provided("kappa2", qp.kappa2),
   };
+}
+
+/**
+ * Passthrough values for the Lab "Copy link" button: locale, screen selection,
+ * and the absorption preference, taken from the already-parsed query schema.
+ * Does not read `location.search`.
+ */
+export function getPermalinkPassthrough(): PermalinkPassthrough {
+  const passthrough: PermalinkPassthrough = {};
+  if (QueryStringMachine.containsKey("locale")) {
+    const locale = getGlobal("phet.chipper.locale");
+    if (typeof locale === "string" && locale.length > 0) {
+      passthrough.locale = locale;
+    }
+  }
+  if (QueryStringMachine.containsKey("screens")) {
+    const screens = getGlobal("phet.chipper.queryParameters.screens");
+    if (Array.isArray(screens)) {
+      const joined = screens.map((screen: unknown) => String(screen)).join(",");
+      if (joined.length > 0) {
+        passthrough.screens = joined;
+      }
+    } else if (typeof screens === "string" && screens.length > 0) {
+      passthrough.screens = screens;
+    } else if (typeof screens === "number") {
+      passthrough.screens = String(screens);
+    }
+  }
+  if (QueryStringMachine.containsKey("initialScreen")) {
+    const initialScreen = getGlobal("phet.chipper.queryParameters.initialScreen");
+    if (typeof initialScreen === "number" || (typeof initialScreen === "string" && initialScreen.length > 0)) {
+      passthrough.initialScreen = String(initialScreen);
+    }
+  }
+  if (QueryStringMachine.containsKey("wavelengthDependentAbsorption")) {
+    passthrough.wavelengthDependentAbsorption = lightPropagationQueryParameters.wavelengthDependentAbsorption;
+  }
+  return passthrough;
 }
 
 LightPropagationNamespace.register("lightPropagationQueryParameters", lightPropagationQueryParameters);

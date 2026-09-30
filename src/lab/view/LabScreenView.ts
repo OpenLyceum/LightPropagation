@@ -33,6 +33,7 @@ import { WaveScreenView, type WaveScreenViewOptions } from "../../common/view/Wa
 import { StringManager } from "../../i18n/StringManager.js";
 import LightPropagationColors from "../../LightPropagationColors.js";
 import { SCREEN_VIEW_MARGIN } from "../../LightPropagationConstants.js";
+import { getPermalinkPassthrough } from "../../preferences/lightPropagationQueryParameters.js";
 import type { LabModel } from "../model/LabModel.js";
 import { permalinkQueryString } from "../model/labQueryParameterMapping.js";
 import { LabPresetComboBox } from "./LabPresetComboBox.js";
@@ -143,9 +144,10 @@ export class LabScreenView extends WaveScreenView {
       ),
       baseColor: LightPropagationColors.controlSurfaceColorProperty,
       listener: () => {
-        // Keep foreign query parameters (locale, screen selection, the
-        // absorption preference) so the link reproduces the whole session.
-        const query = permalinkQueryString(window.location.search, scene.getState());
+        // Locale, screen selection, and the absorption preference come from the
+        // parsed query schema so the link reproduces the session without reading
+        // the address bar. Lab state is serialized from the scene.
+        const query = permalinkQueryString(getPermalinkPassthrough(), scene.getState());
         const url = `${window.location.origin}${window.location.pathname}${query ? `?${query}` : ""}`;
         if (navigator.clipboard) {
           navigator.clipboard.writeText(url).then(showLinkCopied, () => {

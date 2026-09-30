@@ -18,7 +18,10 @@
  * schema (one value per wave) mirrors EMANIM's.
  *
  * The QueryStringMachine declarations live in
- * src/preferences/lightPropagationQueryParameters.ts.
+ * src/preferences/lightPropagationQueryParameters.ts. Permalink writing does
+ * not read the address bar: the caller passes already-parsed passthrough
+ * values (locale, screen selection, the absorption preference) and this
+ * module serializes those plus the Lab state.
  */
 
 import type { PolarizationType } from "../../common/model/PolarizationType.js";
@@ -225,19 +228,40 @@ export function queryStringFromState(providedState: WaveSceneState): string {
 }
 
 /**
- * The full query string (no leading "?") for the Copy-link permalink: the
- * current URL's query with every Lab state parameter replaced by `state`'s
- * serialization. Parameters the mapping does not own — locale, screen
- * selection, the wavelengthDependentAbsorption preference (which changes the
- * physics!) — pass through untouched, so the copied link reproduces the whole
- * session, not just the Lab state.
+ * Already-validated query values the Lab state mapping does not own. The
+ * caller reads them from QueryStringMachine (startup locale / screen selection
+ * and the absorption preference). This module only writes them.
  */
-export function permalinkQueryString(currentSearch: string, state: WaveSceneState): string {
-  const params = new URLSearchParams(currentSearch);
-  for (const key of LAB_QUERY_PARAMETER_KEYS) {
-    params.delete(key);
+export type PermalinkPassthrough = {
+  locale?: string;
+  screens?: string;
+  initialScreen?: string;
+  wavelengthDependentAbsorption?: boolean;
+};
+
+/**
+ * The full query string (no leading "?") for the Copy-link permalink.
+ * Passthrough values are written first, then the Lab state parameters that
+ * differ from the defaults. Lab state keys are never copied from a raw query
+ * string — `queryStringFromState` is the only source for those.
+ */
+export function permalinkQueryString(passthrough: PermalinkPassthrough, state: WaveSceneState): string {
+  const parts: string[] = [];
+  if (passthrough.locale !== undefined) {
+    parts.push(`locale=${passthrough.locale}`);
+  }
+  if (passthrough.screens !== undefined) {
+    parts.push(`screens=${passthrough.screens}`);
+  }
+  if (passthrough.initialScreen !== undefined) {
+    parts.push(`initialScreen=${passthrough.initialScreen}`);
+  }
+  if (passthrough.wavelengthDependentAbsorption !== undefined) {
+    parts.push(`wavelengthDependentAbsorption=${passthrough.wavelengthDependentAbsorption}`);
   }
   const stateQuery = queryStringFromState(state);
-  const parts = [params.toString(), stateQuery].filter((part) => part.length > 0);
+  if (stateQuery.length > 0) {
+    parts.push(stateQuery);
+  }
   return parts.join("&");
 }

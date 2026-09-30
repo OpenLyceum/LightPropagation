@@ -116,24 +116,20 @@ describe("queryStringFromState", () => {
     expect(queryStringFromState(state)).toBe("wave2=horizontal&phase=-90&sum=true");
   });
 
-  it("permalinkQueryString preserves foreign parameters and replaces Lab state ones", () => {
+  it("permalinkQueryString writes passthrough values and the current Lab state", () => {
     const { state } = stateFromQueryParameters({ wave2: "horizontal", sum: true });
-    const query = permalinkQueryString(
-      "?locale=fr&preset=absorption&kappa1=0.5&wavelengthDependentAbsorption=true",
-      state,
-    );
+    const query = permalinkQueryString({ locale: "fr", wavelengthDependentAbsorption: true }, state);
     const params = new URLSearchParams(query);
-    expect(params.get("locale")).toBe("fr"); // foreign parameter untouched
-    expect(params.get("wavelengthDependentAbsorption")).toBe("true"); // physics preference untouched
-    expect(params.get("preset")).toBeNull(); // stale Lab parameters replaced…
+    expect(params.get("locale")).toBe("fr");
+    expect(params.get("wavelengthDependentAbsorption")).toBe("true");
+    expect(params.get("preset")).toBeNull();
     expect(params.get("kappa1")).toBeNull();
-    expect(params.get("wave2")).toBe("horizontal"); // …by the current state
+    expect(params.get("wave2")).toBe("horizontal");
     expect(params.get("sum")).toBe("true");
   });
 
-  it("permalinkQueryString of the default state with no foreign parameters is empty", () => {
-    expect(permalinkQueryString("", defaultWaveSceneState())).toBe("");
-    expect(permalinkQueryString("?preset=standingWave", defaultWaveSceneState())).toBe("");
+  it("permalinkQueryString of the default state with no passthrough is empty", () => {
+    expect(permalinkQueryString({}, defaultWaveSceneState())).toBe("");
   });
 
   it("round-trips: parsing a serialized state reproduces it, preset selection included", () => {

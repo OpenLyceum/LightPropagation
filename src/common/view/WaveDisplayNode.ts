@@ -45,6 +45,7 @@ import {
 import type { WaveSceneModel } from "../model/WaveSceneModel.js";
 import { applyThreeCompatibilityShims } from "./threeCompat.js";
 import type { WaveSceneCamera } from "./WaveSceneCamera.js";
+import { WaveViewHotkeyData } from "./WaveViewHotkeyData.js";
 
 /** Radians of orbit per pixel of drag. */
 const ORBIT_SPEED = 0.005;
@@ -392,9 +393,10 @@ export class WaveDisplayNode extends Node {
     });
 
     // Zoom keys only — orbit arrows are owned by RichDragListener above.
+    // The key list is WaveViewHotkeyData.zoom, shared with the keyboard-help row.
     this.addInputListener(
       new KeyboardListener({
-        keys: ["plus", "equals", "minus"],
+        keyStringProperties: WaveViewHotkeyData.zoom.keyStringProperties,
         fireOnHold: true,
         fire: (_event, keysPressed) => {
           if (keysPressed === "minus") {
