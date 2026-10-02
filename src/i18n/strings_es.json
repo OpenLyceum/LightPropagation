@@ -97,6 +97,7 @@
   "keyboardHelp": {
     "rotateViewTitle": "Rotar la vista 3D",
     "rotateView": "Rotar la vista",
+    "zoomViewTitle": "Ampliar la vista 3D",
     "zoomView": "Acercar o alejar"
   },
   "a11y": {

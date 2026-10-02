@@ -97,6 +97,7 @@
   "keyboardHelp": {
     "rotateViewTitle": "Faire pivoter la vue 3D",
     "rotateView": "Faire pivoter la vue",
+    "zoomViewTitle": "Zoomer la vue 3D",
     "zoomView": "Zoomer ou dézoomer"
   },
   "a11y": {

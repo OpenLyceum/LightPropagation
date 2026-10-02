@@ -40,7 +40,7 @@ export class WaveKeyboardHelpContent extends TwoColumnKeyboardHelpContent {
       headingStringProperty: keyboardHelp.rotateViewTitleStringProperty,
     });
 
-    const zoomSection = new KeyboardHelpSection(keyboardHelp.zoomViewStringProperty, [
+    const zoomSection = new KeyboardHelpSection(keyboardHelp.zoomViewTitleStringProperty, [
       KeyboardHelpSectionRow.fromHotkeyData(WaveViewHotkeyData.zoom, {
         icon: KeyboardHelpIconFactory.iconOrIcon(new TextKeyNode("+"), new TextKeyNode("-")),
       }),

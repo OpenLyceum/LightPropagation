@@ -18,7 +18,9 @@ export type ThemedCheckboxOptions = CheckboxOptions;
 export class ThemedCheckbox extends Checkbox {
   public constructor(property: Property<boolean>, content: Node, providedOptions?: ThemedCheckboxOptions) {
     const options = optionize<ThemedCheckboxOptions, EmptySelfOptions, CheckboxOptions>()(
-      SIM_CHECKBOX_OPTIONS,
+      // optionize merges into its first argument; copy so one checkbox's
+      // options (e.g. an enabledProperty) never leak into the shared constant.
+      { ...SIM_CHECKBOX_OPTIONS },
       providedOptions,
     );
     super(property, content, options);
