@@ -24,6 +24,17 @@ function linearDichroismState(): WaveSceneState {
 }
 
 describe("WaveSceneModel", () => {
+  it("refreshes paused buffers after an external clock change", () => {
+    const model = new WaveSceneModel();
+    model.timer.isPlayingProperty.value = false;
+    model.timer.timeProperty.value = 1;
+    model.step(0);
+    const reference = new WaveSceneModel();
+    reference.timer.timeProperty.value = 1;
+    reference.sampleNow();
+    expect(model.sampler.wave1Electric).toEqual(reference.sampler.wave1Electric);
+  });
+
   it("applyState/getState round-trips", () => {
     const model = new WaveSceneModel();
     const state = linearDichroismState();

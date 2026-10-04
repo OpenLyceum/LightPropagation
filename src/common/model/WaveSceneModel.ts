@@ -149,6 +149,10 @@ export class WaveSceneModel {
       });
     }
 
+    this.timer.timeProperty.lazyLink(() => {
+      this.sampleDirty = true;
+    });
+
     this.sampleNow();
   }
 
