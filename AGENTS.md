@@ -68,7 +68,7 @@ open PRs that fight the overrides. Revisit when SceneryStack drops or re-pins th
 |---|---|---|
 | `lodash` | `~4.18.1` | SceneryStack declares `~4.17.12`. Bump clears Dependabot/npm advisories patched in 4.18.x (e.g. GHSA-r5fr-rjxr-66jc, GHSA-f23m-r3pf-42rh). |
 | `three` | `^0.185.1` | This sim uses Three.js APIs on the current line, not SceneryStack's 0.125 pin. `@types/three` matches. Do not force `~0.125.2` here. |
-| `brace-expansion` | `~5.0.9` | Transitive via `vite-plugin-pwa` / Workbox. Clears npm audit (originally GHSA-mh99-v99m-4gvg; keep ≥5.0.9 for GHSA-rgw5-rvv9-x895). |
+| `brace-expansion` | `~5.0.12` | Transitive via `vite-plugin-pwa` / Workbox. Clears npm audit (originally GHSA-mh99-v99m-4gvg; keep ≥5.0.9 for GHSA-rgw5-rvv9-x895; ≥5.0.12 for the CPU-DoS advisory). |
 
 ## Testing
 
