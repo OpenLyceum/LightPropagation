@@ -13,10 +13,10 @@ import type { Node } from "scenerystack/scenery";
 import { Text } from "scenerystack/scenery";
 import { ComboBox, type ComboBoxItem } from "scenerystack/sun";
 import { LIGHT_SURFACE_TEXT_FILL, SIM_COMBO_BOX_OPTIONS } from "../../common/LightPropagationButtonOptions.js";
+import { LAB_PRESETS, type LabPresetSelection } from "../../common/model/LabPresets.js";
 import { CONTROL_FONT } from "../../common/view/LightPropagationControlOptions.js";
 import { StringManager } from "../../i18n/StringManager.js";
 import type { LabModel } from "../model/LabModel.js";
-import { LAB_PRESETS, type LabPresetSelection } from "../model/LabPresets.js";
 
 const ITEM_TEXT_OPTIONS = { font: CONTROL_FONT, fill: LIGHT_SURFACE_TEXT_FILL, maxWidth: 220 };
 

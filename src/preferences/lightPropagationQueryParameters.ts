@@ -14,7 +14,7 @@
  * Application order: defaults → `preset` → explicit parameters, so e.g.
  * `?preset=absorption&kappa1=0.5` starts from the Absorption preset and then
  * overrides κ₁. Out-of-range numbers are clamped and snapped to the slider
- * grid. The pure mapping lives in src/lab/model/labQueryParameterMapping.ts;
+ * grid. The pure mapping lives in src/common/model/labQueryParameterMapping.ts;
  * this file only declares the parameters and reads which ones were provided.
  *
  * Usage: append e.g. `?preset=standingWave` or
@@ -23,10 +23,10 @@
 
 import { getGlobal, logGlobal } from "scenerystack/phet-core";
 import { QueryStringMachine } from "scenerystack/query-string-machine";
+import { type LabPresetKey, LabPresetKeys } from "../common/model/LabPresets.js";
+import type { LabQueryParameterValues, PermalinkPassthrough } from "../common/model/labQueryParameterMapping.js";
 import { PolarizationTypeValues } from "../common/model/PolarizationType.js";
 import LightPropagationNamespace from "../LightPropagationNamespace.js";
-import { type LabPresetKey, LabPresetKeys } from "../lab/model/LabPresets.js";
-import type { LabQueryParameterValues, PermalinkPassthrough } from "../lab/model/labQueryParameterMapping.js";
 
 /** A wave parameter is a polarization, or "off" to disable the wave. */
 const WAVE_VALUES = ["off", ...PolarizationTypeValues];

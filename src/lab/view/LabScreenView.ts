@@ -19,6 +19,7 @@ import {
   LIGHT_SURFACE_TEXT_FILL,
 } from "../../common/LightPropagationButtonOptions.js";
 import { LightPropagationPanel } from "../../common/LightPropagationPanel.js";
+import { permalinkQueryString } from "../../common/model/labQueryParameterMapping.js";
 import {
   CONTROL_FONT,
   CONTROL_TEXT_OPTIONS,
@@ -35,7 +36,6 @@ import LightPropagationColors from "../../LightPropagationColors.js";
 import { SCREEN_VIEW_MARGIN } from "../../LightPropagationConstants.js";
 import { getPermalinkPassthrough } from "../../preferences/lightPropagationQueryParameters.js";
 import type { LabModel } from "../model/LabModel.js";
-import { permalinkQueryString } from "../model/labQueryParameterMapping.js";
 import { LabPresetComboBox } from "./LabPresetComboBox.js";
 import { LabScreenSummaryContent } from "./LabScreenSummaryContent.js";
 

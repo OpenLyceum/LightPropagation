@@ -11,10 +11,10 @@
  */
 import { StringUnionProperty } from "scenerystack/axon";
 import type { TModel } from "scenerystack/joist";
+import { getLabPresetState, type LabPresetSelection, LabPresetSelectionValues } from "../../common/model/LabPresets.js";
 import { WaveSceneModel } from "../../common/model/WaveSceneModel.js";
 import type { WaveSceneState } from "../../common/model/WaveSceneState.js";
 import type { LightPropagationPreferencesModel } from "../../preferences/LightPropagationPreferencesModel.js";
-import { getLabPresetState, type LabPresetSelection, LabPresetSelectionValues } from "./LabPresets.js";
 
 /** The screen's startup configuration (from permalink query parameters). */
 export type LabInitialState = {

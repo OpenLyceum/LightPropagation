@@ -8,9 +8,9 @@
  */
 
 import { describe, expect, it } from "vitest";
+import { getLabPresetState, LAB_PRESETS, LabPresetKeys } from "../src/common/model/LabPresets.js";
 import { clampWaveSceneState, mergeWaveSceneState, waveSceneStatesEqual } from "../src/common/model/WaveSceneState.js";
 import { MATERIAL_UNIT_LENGTH } from "../src/LightPropagationConstants.js";
-import { getLabPresetState, LAB_PRESETS, LabPresetKeys } from "../src/lab/model/LabPresets.js";
 import { HALF_WAVE_PLATE, QUARTER_WAVE_PLATE } from "../src/wave-plates/model/WavePlatesModel.js";
 
 describe("LabPresets", () => {

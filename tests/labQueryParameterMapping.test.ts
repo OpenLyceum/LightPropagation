@@ -9,14 +9,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { defaultWaveSceneState } from "../src/common/model/WaveSceneState.js";
-import { getLabPresetState, LabPresetKeys } from "../src/lab/model/LabPresets.js";
+import { getLabPresetState, LabPresetKeys } from "../src/common/model/LabPresets.js";
 import {
   type LabQueryParameterValues,
   permalinkQueryString,
   queryStringFromState,
   stateFromQueryParameters,
-} from "../src/lab/model/labQueryParameterMapping.js";
+} from "../src/common/model/labQueryParameterMapping.js";
+import { defaultWaveSceneState } from "../src/common/model/WaveSceneState.js";
 
 /** Parses a query string back into the provided-parameter record, as the sim's QueryStringMachine would. */
 function parseQuery(query: string): LabQueryParameterValues {
