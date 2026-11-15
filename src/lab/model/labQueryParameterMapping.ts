@@ -35,7 +35,7 @@ import {
 import { getLabPresetState, type LabPresetKey, LabPresetKeys, type LabPresetSelection } from "./LabPresets.js";
 
 /** A wave query value is a polarization, or "off" to disable the wave. */
-export type WaveQueryValue = PolarizationType | "off";
+type WaveQueryValue = PolarizationType | "off";
 
 /** Parameters actually present in the URL; absent ones are undefined. */
 export type LabQueryParameterValues = {
@@ -57,34 +57,6 @@ export type LabQueryParameterValues = {
   kappa1?: number | undefined;
   kappa2?: number | undefined;
 };
-
-/**
- * Every query-parameter key owned by the Lab permalink mapping. The Record
- * construction makes TypeScript reject a missing or misspelled key, so this
- * list cannot drift from LabQueryParameterValues.
- */
-const LAB_QUERY_PARAMETER_KEY_RECORD: Record<keyof LabQueryParameterValues, true> = {
-  preset: true,
-  wave1: true,
-  wave2: true,
-  amplitude1: true,
-  amplitude2: true,
-  wavelength1: true,
-  wavelength2: true,
-  phase: true,
-  reverse1: true,
-  sum: true,
-  material: true,
-  sameAsWave1: true,
-  materialLength: true,
-  n1: true,
-  n2: true,
-  kappa1: true,
-  kappa2: true,
-};
-export const LAB_QUERY_PARAMETER_KEYS = Object.keys(LAB_QUERY_PARAMETER_KEY_RECORD) as ReadonlyArray<
-  keyof LabQueryParameterValues
->;
 
 /**
  * The preset whose state equals `state`, or "custom" when none does.

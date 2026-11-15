@@ -17,7 +17,7 @@ import {
   type WaveSceneState,
 } from "../../common/model/WaveSceneState.js";
 
-export const LabPresetCategories = [
+const LabPresetCategories = [
   "singleWaves",
   "superposition",
   "interference",
@@ -25,7 +25,7 @@ export const LabPresetCategories = [
   "linearAnisotropy",
   "circularAnisotropy",
 ] as const;
-export type LabPresetCategory = (typeof LabPresetCategories)[number];
+type LabPresetCategory = (typeof LabPresetCategories)[number];
 
 export const LabPresetKeys = [
   "vertical",

@@ -32,7 +32,7 @@ import {
 import { scopedNameProperty } from "./summaryPhrases.js";
 import { ThemedCheckbox } from "./ThemedCheckbox.js";
 
-export type WaveControlNodeSelfOptions = {
+type WaveControlNodeSelfOptions = {
   /** The wave's title ("Wave 1" / "Wave 2"); tinted with the wave's color. */
   titleStringProperty: TReadOnlyProperty<string>;
   /** Colors the title so the block visually matches its curve. */

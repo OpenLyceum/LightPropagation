@@ -35,7 +35,7 @@ import { ThemedCheckbox } from "./ThemedCheckbox.js";
 
 const WAVE_LABEL_FONT = new PhetFont({ size: 13, weight: "bold" });
 
-export type MaterialControlNodeSelfOptions = {
+type MaterialControlNodeSelfOptions = {
   /** Panel title used as the insert checkbox's label (default: "Material"). */
   titleStringProperty?: TReadOnlyProperty<string>;
   /** Per-wave subtitle labels (default: "Wave 1" / "Wave 2"). */

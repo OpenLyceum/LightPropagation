@@ -49,7 +49,7 @@ export const TIME_SCALE = (30 * Math.PI) / 18;
 /** Electric-field amplitude A (arbitrary units). */
 export const AMPLITUDE_RANGE = new Range(0, 10);
 export const AMPLITUDE_DEFAULT = 5;
-export const AMPLITUDE_STEP = 1;
+const AMPLITUDE_STEP = 1;
 
 /**
  * Integer wavelength number w. The reduced wavelength is ƛ = w/4 and the
@@ -59,7 +59,7 @@ export const WAVELENGTH_NUMBER_RANGE = new Range(1, 8);
 export const WAVELENGTH_NUMBER_DEFAULT = 4;
 
 /** Axis length corresponding to one unit of the wavelength number: λ = w·π/2. */
-export const WAVELENGTH_UNIT = Math.PI / 2;
+const WAVELENGTH_UNIT = Math.PI / 2;
 
 /** Phase difference δ of wave 2 relative to wave 1, in degrees. */
 export const PHASE_DEGREES_RANGE = new Range(-180, 180);

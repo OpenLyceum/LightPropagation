@@ -19,7 +19,7 @@ import { CONTROL_FONT, CONTROL_TEXT_OPTIONS, CONTROL_TITLE_OPTIONS } from "./Lig
 import { ThemedCheckbox } from "./ThemedCheckbox.js";
 import type { CameraPreset, WaveSceneCamera } from "./WaveSceneCamera.js";
 
-export type ViewControlNodeSelfOptions = {
+type ViewControlNodeSelfOptions = {
   /**
    * a11y name overrides for the rows that are shown. Camera-preset buttons
    * default to the shared a11y.common.cameraPresets strings, every other row

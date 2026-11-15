@@ -22,7 +22,7 @@ import {
   NICE_VIEW_FORWARD,
 } from "../../LightPropagationConstants.js";
 
-export const CameraPresetValues = ["nice", "side", "front", "back"] as const;
+const CameraPresetValues = ["nice", "side", "front", "back"] as const;
 export type CameraPreset = (typeof CameraPresetValues)[number];
 
 /** Forward (look) directions of the camera presets, unit vectors. */

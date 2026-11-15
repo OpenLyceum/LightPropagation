@@ -46,7 +46,7 @@ import { WaveTimeControlNode } from "./WaveTimeControlNode.js";
  * transmitted wave and its E-vector arrow are, i.e. the part these screens
  * exist to show.
  */
-export type PanelLayout = "singleColumn" | "twoColumn";
+type PanelLayout = "singleColumn" | "twoColumn";
 
 /** Projection shift (layout pixels) and starting zoom for each panel layout. */
 const SCENE_FRAMING: Record<PanelLayout, { viewOffset: Vector2; cameraRange: number }> = {
@@ -60,7 +60,7 @@ export type WaveScreenModel = {
   reset(): void;
 };
 
-export type WaveScreenViewSelfOptions = {
+type WaveScreenViewSelfOptions = {
   waveViewAccessibleNameProperty: TReadOnlyProperty<string>;
   waveViewAccessibleHelpTextProperty: TReadOnlyProperty<string>;
   /** Frames the 3D scene for the screen's panel stack (default: "singleColumn"). */

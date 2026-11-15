@@ -9,7 +9,3 @@
 export const PolarizationTypeValues = ["vertical", "horizontal", "leftCircular", "rightCircular"] as const;
 
 export type PolarizationType = (typeof PolarizationTypeValues)[number];
-
-export function isPolarizationType(value: string): value is PolarizationType {
-  return (PolarizationTypeValues as readonly string[]).includes(value);
-}
