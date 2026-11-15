@@ -18,10 +18,16 @@ import { DerivedProperty, type TReadOnlyProperty } from "scenerystack/axon";
 import type { TModel } from "scenerystack/joist";
 import { WaveSceneModel } from "../../common/model/WaveSceneModel.js";
 
-/** Exact on-grid quarter-wave plate at w = 4. */
+/**
+ * Exact on-grid quarter-wave plate at w = 4.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export const QUARTER_WAVE_PLATE = { lengthNumber: 20, n1: 1.05, n2: 1.0 };
 
-/** Exact on-grid half-wave plate at w = 4. */
+/**
+ * Exact on-grid half-wave plate at w = 4.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export const HALF_WAVE_PLATE = { lengthNumber: 20, n1: 1.1, n2: 1.0 };
 
 export class WavePlatesModel implements TModel {

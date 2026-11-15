@@ -62,7 +62,10 @@ export type MaterialSnapshot = {
   wavelengthDependentAbsorption?: boolean;
 };
 
-/** Reusable output record for {@link phaseAndDecay}. */
+/**
+ * Reusable output record for {@link phaseAndDecay}.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export type PhaseDecay = {
   phase: number;
   decay: number;
@@ -79,6 +82,7 @@ const HALF_PI = Math.PI / 2;
 /**
  * Computes the phase Φ and amplitude decay D of a wave at position x, time t.
  * Writes into `out` to keep the per-frame sampling loop allocation-free.
+ * @internal Exported for unit tests; not part of the application API.
  */
 export function phaseAndDecay(
   x: number,

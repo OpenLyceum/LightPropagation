@@ -164,6 +164,7 @@ function waveQueryValue(wave: WaveState): WaveQueryValue {
  * string means the state IS the default. The state is clamped first, so the
  * emitted link always parses back to the same (valid) state — e.g. a sum
  * flag left on while a wave is off is dropped rather than serialized.
+ * @internal Exported for unit tests; not part of the application API.
  */
 export function queryStringFromState(providedState: WaveSceneState): string {
   const state = clampWaveSceneState(providedState);
