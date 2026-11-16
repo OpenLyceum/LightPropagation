@@ -39,7 +39,7 @@ export class EMWave {
    * kept here so the list cannot drift from the Properties it mirrors.
    * WaveSceneModel concatenates these across its parts.
    */
-  public readonly stateProperties: ReadonlyArray<TReadOnlyProperty<unknown>>;
+  public readonly stateProperties: readonly TReadOnlyProperty<unknown>[];
 
   public constructor(initialState: WaveState) {
     this.enabledProperty = new BooleanProperty(initialState.enabled);

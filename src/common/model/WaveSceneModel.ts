@@ -81,7 +81,7 @@ export class WaveSceneModel {
    * flat list — LabModel watches these to flip its preset selector to
    * "custom" on any manual change.
    */
-  public readonly stateProperties: ReadonlyArray<TReadOnlyProperty<unknown>>;
+  public readonly stateProperties: readonly TReadOnlyProperty<unknown>[];
 
   // Reusable snapshots so per-frame sampling is allocation-free.
   private readonly wave1Snapshot: SampledWave;

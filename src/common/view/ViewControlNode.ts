@@ -64,7 +64,7 @@ export class ViewControlNode extends VBox {
 
     // Visible label and default accessible name per camera preset; the terse
     // button labels ("Nice") get the more descriptive shared a11y names.
-    const presetEntries: Array<[CameraPreset, TReadOnlyProperty<string>, TReadOnlyProperty<string>]> = [
+    const presetEntries: [CameraPreset, TReadOnlyProperty<string>, TReadOnlyProperty<string>][] = [
       ["nice", controls.views.niceStringProperty, commonA11y.cameraPresets.niceStringProperty],
       ["side", controls.views.sideStringProperty, commonA11y.cameraPresets.sideStringProperty],
       ["front", controls.views.frontStringProperty, commonA11y.cameraPresets.frontStringProperty],

@@ -83,7 +83,7 @@ export class WavePlatesScreenView extends WaveScreenView {
     );
 
     // Exact plate presets (see WavePlatesModel for the on-grid values).
-    const plateButtonEntries: Array<[typeof plates.quarterWaveStringProperty, () => void]> = [
+    const plateButtonEntries: [typeof plates.quarterWaveStringProperty, () => void][] = [
       [plates.quarterWaveStringProperty, () => model.applyQuarterWavePlate()],
       [plates.halfWaveStringProperty, () => model.applyHalfWavePlate()],
     ];

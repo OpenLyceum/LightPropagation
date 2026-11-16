@@ -73,7 +73,7 @@ describe("LabPresets", () => {
   });
 
   it("wavelength-ratio presets set (w1, w2) = (4,4), (1,8), (7,8)", () => {
-    const pairs: Array<[Parameters<typeof getLabPresetState>[0], number, number]> = [
+    const pairs: [Parameters<typeof getLabPresetState>[0], number, number][] = [
       ["wavelengthRatio1to1", 4, 4],
       ["wavelengthRatio1to8", 1, 8],
       ["wavelengthRatio7to8", 7, 8],

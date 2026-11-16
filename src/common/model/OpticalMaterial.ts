@@ -48,7 +48,7 @@ export class OpticalMaterial {
    * kept here so the list cannot drift from the Properties it mirrors.
    * WaveSceneModel concatenates these across its parts.
    */
-  public readonly stateProperties: ReadonlyArray<TReadOnlyProperty<unknown>>;
+  public readonly stateProperties: readonly TReadOnlyProperty<unknown>[];
 
   // True while this class itself writes n2/kappa2, so those writes don't
   // count as "manual edits" that uncheck sameAsWave1.
