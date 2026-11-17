@@ -27,7 +27,7 @@ Shared code uses the `LightPropagation` prefix; per-screen code uses `Intro` / `
 |---|---|
 | Shared physics | `src/common/model/WaveSceneModel.ts`, `WaveEquations.ts`, `FieldSampler.ts`, `EMWave.ts`, `OpticalMaterial.ts` |
 | Shared views | `src/common/view/WaveDisplayNode.ts` (only mobius import), `WaveScreenView.ts`, control nodes |
-| Lab presets / permalinks | `src/lab/model/LabPresets.ts`, `labQueryParameterMapping.ts` |
+| Lab presets / permalinks | `src/common/model/LabPresets.ts`, `labQueryParameterMapping.ts` |
 | Colors / constants / namespace | `LightPropagationColors.ts`, `LightPropagationConstants.ts`, `LightPropagationNamespace.ts` |
 | Shared UI helpers | `src/common/LightPropagationPanel.ts`, `LightPropagationButtonOptions.ts`, `TimeModel.ts` |
 | Screens | `src/intro/`, `src/polarization/`, `src/wave-plates/`, `src/lab/` — each `*Screen.ts`, `model/`, `view/` |
