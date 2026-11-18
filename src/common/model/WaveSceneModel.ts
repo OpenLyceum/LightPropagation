@@ -48,7 +48,7 @@ export type WaveSceneDisplayOptions = {
 
 export class WaveSceneModel {
   /** Play/pause + elapsed time. Time is in EMANIM axis units, not seconds. */
-  public readonly timer = new TimeModel(true);
+  public readonly timer = new TimeModel({ initiallyPlaying: true, units: null });
 
   public readonly timeSpeedProperty = new EnumerationProperty(TimeSpeed.NORMAL);
 
