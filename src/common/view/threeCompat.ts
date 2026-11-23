@@ -25,11 +25,6 @@
 import { THREE, ThreeUtils } from "scenerystack/mobius";
 import { getGlobal } from "scenerystack/phet-core";
 
-type RendererWithContext = {
-  context?: WebGL2RenderingContext;
-  getContext(): WebGL2RenderingContext;
-};
-
 let applied = false;
 
 export function applyThreeCompatibilityShims(): void {
@@ -38,21 +33,23 @@ export function applyThreeCompatibilityShims(): void {
   }
   applied = true;
 
-  const rendererPrototype = THREE.WebGLRenderer.prototype as unknown as RendererWithContext;
+  const rendererPrototype = THREE.WebGLRenderer.prototype;
   if (!("context" in rendererPrototype)) {
-    Object.defineProperty(THREE.WebGLRenderer.prototype, "context", {
-      get(this: RendererWithContext): WebGL2RenderingContext {
+    Object.defineProperty(rendererPrototype, "context", {
+      get(this: InstanceType<typeof THREE.WebGLRenderer>) {
         return this.getContext();
       },
       configurable: true,
     });
   }
 
-  const scenePrototype = THREE.Scene.prototype as unknown as { dispose?: () => void };
-  if (typeof scenePrototype.dispose !== "function") {
-    scenePrototype.dispose = (): void => {
-      // Scene.dispose() no longer exists in three; nothing to release here.
-    };
+  const scenePrototype = THREE.Scene.prototype;
+  if (!("dispose" in scenePrototype) || typeof scenePrototype.dispose !== "function") {
+    Object.assign(scenePrototype, {
+      dispose(): void {
+        // Scene.dispose() no longer exists in three; nothing to release here.
+      },
+    });
   }
 
   ThreeUtils.isWebGLEnabled = (): boolean => {
