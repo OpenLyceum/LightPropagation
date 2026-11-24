@@ -161,23 +161,22 @@ export class WaveDisplayNode extends Node {
   private readonly model: WaveSceneModel;
   private readonly camera: WaveSceneCamera;
 
-  private wave1Curve!: DynamicCurve;
-  private wave2Curve!: DynamicCurve;
-  private sumCurve!: DynamicCurve;
-  private wave1BCurve!: DynamicCurve;
-  private wave2BCurve!: DynamicCurve;
-  private sumBCurve!: DynamicCurve;
-
+  private readonly rendering: {
+    readonly wave1Curve: DynamicCurve;
+    readonly wave2Curve: DynamicCurve;
+    readonly sumCurve: DynamicCurve;
+    readonly wave1BCurve: DynamicCurve;
+    readonly wave2BCurve: DynamicCurve;
+    readonly sumBCurve: DynamicCurve;
+    readonly wave1Arrows: EndArrow[];
+    readonly wave2Arrows: EndArrow[];
+    readonly sumArrows: EndArrow[];
+    readonly constructionLines: THREE.LineSegments;
+    readonly constructionAttribute: THREE.BufferAttribute;
+    readonly materialGroup: THREE.Group;
+  } | null;
   // E-vector arrows, [leftEnd, rightEnd] per curve.
-  private wave1Arrows!: EndArrow[];
-  private wave2Arrows!: EndArrow[];
-  private sumArrows!: EndArrow[];
-
-  private constructionLines!: THREE.LineSegments;
   private readonly constructionPositions = new Float32Array(8 * 3);
-  private constructionAttribute!: THREE.BufferAttribute;
-
-  private materialGroup!: THREE.Group;
 
   public constructor(
     model: WaveSceneModel,
@@ -199,6 +198,7 @@ export class WaveDisplayNode extends Node {
     this.supportsWebGL = ThreeUtils.isWebGLEnabled();
 
     if (!this.supportsWebGL) {
+      this.rendering = null;
       this.addChild(
         new Text(providedOptions.webglWarningStringProperty, {
           font: new PhetFont(16),
@@ -222,9 +222,11 @@ export class WaveDisplayNode extends Node {
 
     const scene = this.sceneNode.stage.threeScene;
     this.buildStaticFurniture(scene);
-    this.buildCurves(scene);
-    this.buildArrowsAndConstructionLines(scene);
-    this.buildMaterialBox(scene);
+    this.rendering = {
+      ...this.buildCurves(scene),
+      ...this.buildArrowsAndConstructionLines(scene),
+      materialGroup: this.buildMaterialBox(scene),
+    };
     this.addCameraListeners();
 
     // Position the camera before the first render so no frame shows the
@@ -264,27 +266,21 @@ export class WaveDisplayNode extends Node {
     scene.add(lines);
   }
 
-  private buildCurves(scene: THREE.Scene): void {
+  private buildCurves(scene: THREE.Scene) {
     const xGrid = this.model.sampler.xGrid;
-    this.wave1Curve = new DynamicCurve(LightPropagationColors.wave1ColorProperty, xGrid);
-    this.wave2Curve = new DynamicCurve(LightPropagationColors.wave2ColorProperty, xGrid);
-    this.sumCurve = new DynamicCurve(LightPropagationColors.superpositionColorProperty, xGrid);
-    this.wave1BCurve = new DynamicCurve(LightPropagationColors.bField1ColorProperty, xGrid);
-    this.wave2BCurve = new DynamicCurve(LightPropagationColors.bField2ColorProperty, xGrid);
-    this.sumBCurve = new DynamicCurve(LightPropagationColors.bFieldSumColorProperty, xGrid);
-    for (const curve of [
-      this.wave1Curve,
-      this.wave2Curve,
-      this.sumCurve,
-      this.wave1BCurve,
-      this.wave2BCurve,
-      this.sumBCurve,
-    ]) {
+    const wave1Curve = new DynamicCurve(LightPropagationColors.wave1ColorProperty, xGrid);
+    const wave2Curve = new DynamicCurve(LightPropagationColors.wave2ColorProperty, xGrid);
+    const sumCurve = new DynamicCurve(LightPropagationColors.superpositionColorProperty, xGrid);
+    const wave1BCurve = new DynamicCurve(LightPropagationColors.bField1ColorProperty, xGrid);
+    const wave2BCurve = new DynamicCurve(LightPropagationColors.bField2ColorProperty, xGrid);
+    const sumBCurve = new DynamicCurve(LightPropagationColors.bFieldSumColorProperty, xGrid);
+    for (const curve of [wave1Curve, wave2Curve, sumCurve, wave1BCurve, wave2BCurve, sumBCurve]) {
       scene.add(curve.line);
     }
+    return { wave1Curve, wave2Curve, sumCurve, wave1BCurve, wave2BCurve, sumBCurve };
   }
 
-  private buildArrowsAndConstructionLines(scene: THREE.Scene): void {
+  private buildArrowsAndConstructionLines(scene: THREE.Scene) {
     const makePair = (colorProperty: ProfileColorProperty, headScale: number): EndArrow[] => {
       const pair = [
         new EndArrow(-WAVE_AXIS_HALF_LENGTH, colorProperty, headScale),
@@ -295,23 +291,24 @@ export class WaveDisplayNode extends Node {
       }
       return pair;
     };
-    this.wave1Arrows = makePair(LightPropagationColors.wave1ColorProperty, 1);
-    this.wave2Arrows = makePair(LightPropagationColors.wave2ColorProperty, 1);
-    this.sumArrows = makePair(LightPropagationColors.superpositionColorProperty, 1.5);
+    const wave1Arrows = makePair(LightPropagationColors.wave1ColorProperty, 1);
+    const wave2Arrows = makePair(LightPropagationColors.wave2ColorProperty, 1);
+    const sumArrows = makePair(LightPropagationColors.superpositionColorProperty, 1.5);
 
-    this.constructionAttribute = new THREE.BufferAttribute(this.constructionPositions, 3);
-    this.constructionAttribute.setUsage(THREE.DynamicDrawUsage);
+    const constructionAttribute = new THREE.BufferAttribute(this.constructionPositions, 3);
+    constructionAttribute.setUsage(THREE.DynamicDrawUsage);
     const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", this.constructionAttribute);
-    this.constructionLines = new THREE.LineSegments(
+    geometry.setAttribute("position", constructionAttribute);
+    const constructionLines = new THREE.LineSegments(
       geometry,
       createLinkedLineMaterial(LightPropagationColors.constructionLineColorProperty),
     );
-    this.constructionLines.frustumCulled = false;
-    scene.add(this.constructionLines);
+    constructionLines.frustumCulled = false;
+    scene.add(constructionLines);
+    return { wave1Arrows, wave2Arrows, sumArrows, constructionAttribute, constructionLines };
   }
 
-  private buildMaterialBox(scene: THREE.Scene): void {
+  private buildMaterialBox(scene: THREE.Scene): THREE.Group {
     const unitBox = new THREE.BoxGeometry(1, MATERIAL_CROSS_SECTION, MATERIAL_CROSS_SECTION);
 
     const fillMaterial = new THREE.MeshBasicMaterial({
@@ -331,15 +328,16 @@ export class WaveDisplayNode extends Node {
     );
     edges.frustumCulled = false;
 
-    this.materialGroup = new THREE.Group();
-    this.materialGroup.add(fill);
-    this.materialGroup.add(edges);
-    scene.add(this.materialGroup);
+    const materialGroup = new THREE.Group();
+    materialGroup.add(fill);
+    materialGroup.add(edges);
+    scene.add(materialGroup);
 
     this.model.material.lengthNumberProperty.link((m: number) => {
-      this.materialGroup.scale.x = m * MATERIAL_UNIT_LENGTH;
-      this.materialGroup.updateMatrixWorld();
+      materialGroup.scale.x = m * MATERIAL_UNIT_LENGTH;
+      materialGroup.updateMatrixWorld();
     });
+    return materialGroup;
   }
 
   // ── Interaction ─────────────────────────────────────────────────────────────
@@ -434,7 +432,7 @@ export class WaveDisplayNode extends Node {
     }
   }
 
-  private updateSceneGraph(): void {
+  private updateSceneGraph(rendering: NonNullable<WaveDisplayNode["rendering"]>): void {
     const model = this.model;
     const sampler = model.sampler;
     const wave1On = model.wave1.enabledProperty.value;
@@ -445,30 +443,30 @@ export class WaveDisplayNode extends Node {
     const arrowsOn = model.eVectorsVisibleProperty.value;
     const bOn = model.bFieldVisibleProperty.value;
 
-    this.wave1Curve.line.visible = wave1On && curvesOn;
-    this.wave2Curve.line.visible = wave2On && curvesOn;
-    this.sumCurve.line.visible = sumOn && sumCurveOn;
-    this.wave1BCurve.line.visible = bOn && wave1On && curvesOn;
-    this.wave2BCurve.line.visible = bOn && wave2On && curvesOn;
-    this.sumBCurve.line.visible = bOn && sumOn && sumCurveOn;
+    rendering.wave1Curve.line.visible = wave1On && curvesOn;
+    rendering.wave2Curve.line.visible = wave2On && curvesOn;
+    rendering.sumCurve.line.visible = sumOn && sumCurveOn;
+    rendering.wave1BCurve.line.visible = bOn && wave1On && curvesOn;
+    rendering.wave2BCurve.line.visible = bOn && wave2On && curvesOn;
+    rendering.sumBCurve.line.visible = bOn && sumOn && sumCurveOn;
 
-    if (this.wave1Curve.line.visible) {
-      this.wave1Curve.update(sampler.wave1Electric);
+    if (rendering.wave1Curve.line.visible) {
+      rendering.wave1Curve.update(sampler.wave1Electric);
     }
-    if (this.wave2Curve.line.visible) {
-      this.wave2Curve.update(sampler.wave2Electric);
+    if (rendering.wave2Curve.line.visible) {
+      rendering.wave2Curve.update(sampler.wave2Electric);
     }
-    if (this.sumCurve.line.visible) {
-      this.sumCurve.update(sampler.sumElectric);
+    if (rendering.sumCurve.line.visible) {
+      rendering.sumCurve.update(sampler.sumElectric);
     }
-    if (this.wave1BCurve.line.visible) {
-      this.wave1BCurve.update(sampler.wave1Magnetic);
+    if (rendering.wave1BCurve.line.visible) {
+      rendering.wave1BCurve.update(sampler.wave1Magnetic);
     }
-    if (this.wave2BCurve.line.visible) {
-      this.wave2BCurve.update(sampler.wave2Magnetic);
+    if (rendering.wave2BCurve.line.visible) {
+      rendering.wave2BCurve.update(sampler.wave2Magnetic);
     }
-    if (this.sumBCurve.line.visible) {
-      this.sumBCurve.update(sampler.sumMagnetic);
+    if (rendering.sumBCurve.line.visible) {
+      rendering.sumBCurve.update(sampler.sumMagnetic);
     }
 
     for (const [endIndex, sampleIndex] of [LEFT_END_INDEX, RIGHT_END_INDEX].entries()) {
@@ -479,9 +477,9 @@ export class WaveDisplayNode extends Node {
       const sy = sampler.sumElectric[2 * sampleIndex] ?? 0;
       const sz = sampler.sumElectric[2 * sampleIndex + 1] ?? 0;
 
-      this.wave1Arrows[endIndex]?.update(e1y, e1z, arrowsOn && wave1On);
-      this.wave2Arrows[endIndex]?.update(e2y, e2z, arrowsOn && wave2On);
-      this.sumArrows[endIndex]?.update(sy, sz, arrowsOn && sumOn);
+      rendering.wave1Arrows[endIndex]?.update(e1y, e1z, arrowsOn && wave1On);
+      rendering.wave2Arrows[endIndex]?.update(e2y, e2z, arrowsOn && wave2On);
+      rendering.sumArrows[endIndex]?.update(sy, sz, arrowsOn && sumOn);
 
       // Construction lines: component arrow tips → sum arrow tip at this end.
       const x = endIndex === 0 ? -WAVE_AXIS_HALF_LENGTH : WAVE_AXIS_HALF_LENGTH;
@@ -499,10 +497,10 @@ export class WaveDisplayNode extends Node {
       this.constructionPositions[base + 10] = sy;
       this.constructionPositions[base + 11] = sz;
     }
-    this.constructionAttribute.needsUpdate = true;
-    this.constructionLines.visible = arrowsOn && sumOn;
+    rendering.constructionAttribute.needsUpdate = true;
+    rendering.constructionLines.visible = arrowsOn && sumOn;
 
-    this.materialGroup.visible = this.model.material.enabledProperty.value;
+    rendering.materialGroup.visible = this.model.material.enabledProperty.value;
   }
 
   // ── ScreenView hooks ────────────────────────────────────────────────────────
@@ -514,11 +512,11 @@ export class WaveDisplayNode extends Node {
 
   /** Refreshes camera + scene from the model and renders one frame. */
   public render(): void {
-    if (!this.sceneNode) {
+    if (!(this.sceneNode && this.rendering)) {
       return;
     }
     this.updateCamera();
-    this.updateSceneGraph();
+    this.updateSceneGraph(this.rendering);
     this.sceneNode.render(undefined);
   }
 }
