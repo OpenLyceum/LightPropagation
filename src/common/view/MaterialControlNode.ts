@@ -13,6 +13,7 @@
  */
 
 import { PatternStringProperty, type TReadOnlyProperty } from "scenerystack/axon";
+import { roundSymmetric } from "scenerystack/dot";
 import { type EmptySelfOptions, optionize } from "scenerystack/phet-core";
 import { type Node, type ProfileColorProperty, Text, VBox } from "scenerystack/scenery";
 import { NumberControl, PhetFont } from "scenerystack/scenery-phet";
@@ -98,7 +99,7 @@ export class MaterialControlNode extends VBox {
         delta: 1,
         sliderOptions: {
           ...SIM_NUMBER_CONTROL_OPTIONS.sliderOptions,
-          constrainValue: (value: number) => Math.round(value),
+          constrainValue: (value: number) => roundSymmetric(value),
         },
         enabledProperty,
         accessibleName: controls.material.lengthStringProperty,
@@ -129,7 +130,7 @@ export class MaterialControlNode extends VBox {
     ];
 
     // Snaps to the shared 0.05 step without accumulating float drift.
-    const constrainIndexValue = (value: number): number => Math.round(value / INDEX_STEP) * INDEX_STEP;
+    const constrainIndexValue = (value: number): number => roundSymmetric(value / INDEX_STEP) * INDEX_STEP;
     const indexControlOptions = {
       ...SIM_NUMBER_CONTROL_OPTIONS,
       delta: INDEX_STEP,

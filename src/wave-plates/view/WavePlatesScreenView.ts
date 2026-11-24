@@ -11,6 +11,7 @@
  */
 
 import { DerivedProperty, PatternStringProperty } from "scenerystack/axon";
+import { roundSymmetric } from "scenerystack/dot";
 import { combineOptions, type EmptySelfOptions, optionize } from "scenerystack/phet-core";
 import { HBox, Text, VBox } from "scenerystack/scenery";
 import type { ScreenViewOptions } from "scenerystack/sim";
@@ -110,7 +111,7 @@ export class WavePlatesScreenView extends WaveScreenView {
     // can never disagree; see WavePlatesModel for why it is a magnitude.
     const retardationWavesProperty = new DerivedProperty(
       [model.retardationDegreesProperty],
-      (degrees) => Math.round((degrees / 360) * 1000) / 1000,
+      (degrees) => roundSymmetric((degrees / 360) * 1000) / 1000,
     );
     const retardationReadout = new Text(
       new PatternStringProperty(plates.retardationPatternStringProperty, {
