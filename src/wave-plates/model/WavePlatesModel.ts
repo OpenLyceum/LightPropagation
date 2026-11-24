@@ -15,6 +15,7 @@
  * is why the plate presets use m = 20.)
  */
 import { DerivedProperty, type TReadOnlyProperty } from "scenerystack/axon";
+import { roundSymmetric } from "scenerystack/dot";
 import type { TModel } from "scenerystack/joist";
 import { WaveSceneModel } from "../../common/model/WaveSceneModel.js";
 
@@ -79,7 +80,7 @@ export class WavePlatesModel implements TModel {
     );
     this.retardationDegreesProperty = new DerivedProperty(
       [this.retardationRadiansProperty],
-      (radians) => Math.round((Math.abs(radians) * 1800) / Math.PI) / 10,
+      (radians) => roundSymmetric((Math.abs(radians) * 1800) / Math.PI) / 10,
     );
   }
 

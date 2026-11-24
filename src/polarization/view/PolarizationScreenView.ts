@@ -11,6 +11,7 @@
  * shared wave settings / polarizer / view on the right.
  */
 
+import { roundSymmetric } from "scenerystack/dot";
 import { combineOptions, type EmptySelfOptions, optionize } from "scenerystack/phet-core";
 import { HBox, Text, VBox } from "scenerystack/scenery";
 import { NumberControl } from "scenerystack/scenery-phet";
@@ -76,7 +77,7 @@ export class PolarizationScreenView extends WaveScreenView {
         delta: 1,
         sliderOptions: {
           ...SIM_NUMBER_CONTROL_OPTIONS.sliderOptions,
-          constrainValue: (value: number) => Math.round(value),
+          constrainValue: (value: number) => roundSymmetric(value),
         },
         accessibleName: controls.wavelengthStringProperty,
       },

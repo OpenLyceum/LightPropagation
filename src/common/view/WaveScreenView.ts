@@ -184,8 +184,8 @@ export class WaveScreenView extends ScreenView {
     const sim = getGlobal("phet.joist.sim") as
       | { dimensionProperty?: { value: { width: number; height: number } } }
       | undefined;
-    const width = sim?.dimensionProperty?.value.width || window.innerWidth;
-    const height = sim?.dimensionProperty?.value.height || window.innerHeight;
+    const width = sim?.dimensionProperty?.value.width || document.documentElement.clientWidth;
+    const height = sim?.dimensionProperty?.value.height || document.documentElement.clientHeight;
     this.waveDisplay.layoutStage(width, height);
     // An initial render is required for layout-dependent code.
     this.waveDisplay.render();

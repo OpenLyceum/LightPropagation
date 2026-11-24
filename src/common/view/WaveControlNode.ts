@@ -9,6 +9,7 @@
  */
 
 import type { TReadOnlyProperty } from "scenerystack/axon";
+import { roundSymmetric } from "scenerystack/dot";
 import { type EmptySelfOptions, optionize } from "scenerystack/phet-core";
 import { type Node, type ProfileColorProperty, Text, VBox } from "scenerystack/scenery";
 import { NumberControl } from "scenerystack/scenery-phet";
@@ -135,7 +136,7 @@ export class WaveControlNode extends VBox {
           delta: 1,
           sliderOptions: {
             ...SIM_NUMBER_CONTROL_OPTIONS.sliderOptions,
-            constrainValue: (value: number) => Math.round(value),
+            constrainValue: (value: number) => roundSymmetric(value),
           },
           accessibleName: options.accessibleNames.amplitude ?? scoped(controls.amplitudeStringProperty),
         },
@@ -154,7 +155,7 @@ export class WaveControlNode extends VBox {
           delta: 1,
           sliderOptions: {
             ...SIM_NUMBER_CONTROL_OPTIONS.sliderOptions,
-            constrainValue: (value: number) => Math.round(value),
+            constrainValue: (value: number) => roundSymmetric(value),
           },
           accessibleName: options.accessibleNames.wavelength ?? scoped(controls.wavelengthStringProperty),
         },
@@ -177,7 +178,7 @@ export class WaveControlNode extends VBox {
           },
           sliderOptions: {
             ...SIM_NUMBER_CONTROL_OPTIONS.sliderOptions,
-            constrainValue: (value: number) => Math.round(value / PHASE_DEGREES_STEP) * PHASE_DEGREES_STEP,
+            constrainValue: (value: number) => roundSymmetric(value / PHASE_DEGREES_STEP) * PHASE_DEGREES_STEP,
           },
           accessibleName: options.accessibleNames.phase ?? scoped(controls.phaseDifferenceStringProperty),
         },

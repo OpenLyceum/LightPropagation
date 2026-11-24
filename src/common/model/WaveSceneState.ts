@@ -7,6 +7,7 @@
  * of it, mirroring EMANIM's presets.
  */
 
+import { roundSymmetric } from "scenerystack/dot";
 import {
   AMPLITUDE_DEFAULT,
   AMPLITUDE_RANGE,
@@ -116,7 +117,7 @@ export type PartialWaveSceneState = {
 
 function clampToStep(value: number, min: number, max: number, step: number): number {
   const clamped = Math.min(max, Math.max(min, value));
-  return min + Math.round((clamped - min) / step) * step;
+  return min + roundSymmetric((clamped - min) / step) * step;
 }
 
 function clampWaveState(wave: WaveState): WaveState {
@@ -130,11 +131,13 @@ function clampWaveState(wave: WaveState): WaveState {
 
 function clampIndex(value: number): number {
   // Round to 2 decimals afterwards so 0.05-step arithmetic can't leave float drift.
-  return Math.round(clampToStep(value, REFRACTIVE_INDEX_RANGE.min, REFRACTIVE_INDEX_RANGE.max, INDEX_STEP) * 100) / 100;
+  return (
+    roundSymmetric(clampToStep(value, REFRACTIVE_INDEX_RANGE.min, REFRACTIVE_INDEX_RANGE.max, INDEX_STEP) * 100) / 100
+  );
 }
 
 function clampExtinction(value: number): number {
-  return Math.round(clampToStep(value, EXTINCTION_RANGE.min, EXTINCTION_RANGE.max, INDEX_STEP) * 100) / 100;
+  return roundSymmetric(clampToStep(value, EXTINCTION_RANGE.min, EXTINCTION_RANGE.max, INDEX_STEP) * 100) / 100;
 }
 
 /**
