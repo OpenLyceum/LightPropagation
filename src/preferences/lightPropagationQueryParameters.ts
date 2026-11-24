@@ -13,9 +13,8 @@
  *
  * Application order: defaults → `preset` → explicit parameters, so e.g.
  * `?preset=absorption&kappa1=0.5` starts from the Absorption preset and then
- * overrides κ₁. Out-of-range numbers are clamped and snapped to the slider
- * grid. The pure mapping lives in src/common/model/labQueryParameterMapping.ts;
- * this file only declares the parameters and reads which ones were provided.
+ * overrides κ₁. Finite numbers are clamped and snapped to the slider grid.
+ * Invalid values leave the preset or scene default in place.
  *
  * Usage: append e.g. `?preset=standingWave` or
  * `?wave1=leftCircular&wave2=rightCircular&sum=true` to the sim URL.
@@ -31,6 +30,7 @@ import LightPropagationNamespace from "../LightPropagationNamespace.js";
 /** A wave parameter is a polarization, or "off" to disable the wave. */
 const WAVE_VALUES = ["off", ...PolarizationTypeValues];
 
+const warningCountBeforeParsing = QueryStringMachine.warnings.length;
 const lightPropagationQueryParameters = QueryStringMachine.getAll({
   /** Starting Lab preset, e.g. `preset=standingWave`. */
   preset: {
@@ -60,13 +60,13 @@ const lightPropagationQueryParameters = QueryStringMachine.getAll({
   amplitude1: {
     type: "number",
     defaultValue: 5,
-    isValidValue: (value: number) => value >= 0 && value <= 10,
+    isValidValue: Number.isFinite,
     public: true,
   },
   amplitude2: {
     type: "number",
     defaultValue: 5,
-    isValidValue: (value: number) => value >= 0 && value <= 10,
+    isValidValue: Number.isFinite,
     public: true,
   },
 
@@ -74,13 +74,13 @@ const lightPropagationQueryParameters = QueryStringMachine.getAll({
   wavelength1: {
     type: "number",
     defaultValue: 4,
-    isValidValue: (value: number) => Number.isInteger(value) && value >= 1 && value <= 8,
+    isValidValue: Number.isFinite,
     public: true,
   },
   wavelength2: {
     type: "number",
     defaultValue: 4,
-    isValidValue: (value: number) => Number.isInteger(value) && value >= 1 && value <= 8,
+    isValidValue: Number.isFinite,
     public: true,
   },
 
@@ -88,7 +88,7 @@ const lightPropagationQueryParameters = QueryStringMachine.getAll({
   phase: {
     type: "number",
     defaultValue: 0,
-    isValidValue: (value: number) => value >= -180 && value <= 180,
+    isValidValue: Number.isFinite,
     public: true,
   },
 
@@ -124,7 +124,7 @@ const lightPropagationQueryParameters = QueryStringMachine.getAll({
   materialLength: {
     type: "number",
     defaultValue: 16,
-    isValidValue: (value: number) => Number.isInteger(value) && value >= 1 && value <= 32,
+    isValidValue: Number.isFinite,
     public: true,
   },
 
@@ -132,13 +132,13 @@ const lightPropagationQueryParameters = QueryStringMachine.getAll({
   n1: {
     type: "number",
     defaultValue: 1,
-    isValidValue: (value: number) => value >= 1 && value <= 2,
+    isValidValue: Number.isFinite,
     public: true,
   },
   n2: {
     type: "number",
     defaultValue: 1,
-    isValidValue: (value: number) => value >= 1 && value <= 2,
+    isValidValue: Number.isFinite,
     public: true,
   },
 
@@ -146,13 +146,13 @@ const lightPropagationQueryParameters = QueryStringMachine.getAll({
   kappa1: {
     type: "number",
     defaultValue: 0,
-    isValidValue: (value: number) => value >= 0 && value <= 1,
+    isValidValue: Number.isFinite,
     public: true,
   },
   kappa2: {
     type: "number",
     defaultValue: 0,
-    isValidValue: (value: number) => value >= 0 && value <= 1,
+    isValidValue: Number.isFinite,
     public: true,
   },
 
@@ -168,14 +168,17 @@ const lightPropagationQueryParameters = QueryStringMachine.getAll({
     public: true,
   },
 });
+// A public parse failure returns the schema default. Keep that fallback out of the preset overrides.
+const invalidQueryParameterKeys = new Set(
+  QueryStringMachine.warnings.slice(warningCountBeforeParsing).map((warning) => warning.key),
+);
 
 /**
- * The provided-only view of the parameters (a parameter left at its default
- * because it was absent is undefined here), for stateFromQueryParameters().
+ * Valid values explicitly supplied in the URL, for stateFromQueryParameters().
  */
 export function getLabQueryParameterValues(): LabQueryParameterValues {
   const provided = <T>(key: string, value: T): T | undefined =>
-    QueryStringMachine.containsKey(key) ? value : undefined;
+    QueryStringMachine.containsKey(key) && !invalidQueryParameterKeys.has(key) ? value : undefined;
   const qp = lightPropagationQueryParameters;
   return {
     preset: provided("preset", qp.preset as LabPresetKey),

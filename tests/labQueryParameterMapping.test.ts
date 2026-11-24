@@ -8,7 +8,7 @@
  * inverse, serializing only non-default parameters.
  */
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { getLabPresetState, LabPresetKeys } from "../src/common/model/LabPresets.js";
 import {
   type LabQueryParameterValues,
@@ -48,6 +48,22 @@ describe("stateFromQueryParameters", () => {
     expect(state.material.enabled).toBe(true); // from the preset
     expect(state.material.kappa1).toBe(0.5); // the override wins
     expect(selection).toBe("custom");
+  });
+
+  it("clamps finite URL overrides and leaves presets intact for invalid values", async () => {
+    const originalURL = window.location.href;
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    try {
+      window.history.replaceState(null, "", "?preset=absorption&kappa1=2&material=invalid");
+      const { getLabQueryParameterValues } = await import("../src/preferences/lightPropagationQueryParameters.js");
+      const { state } = stateFromQueryParameters(getLabQueryParameterValues());
+      expect(state.material.kappa1).toBe(1);
+      expect(state.material.enabled).toBe(true);
+      expect(warn).toHaveBeenCalledWith("Invalid value for type, key: material");
+    } finally {
+      warn.mockRestore();
+      window.history.replaceState(null, "", originalURL);
+    }
   });
 
   it("keeps the preset selected when overrides are no-ops", () => {
